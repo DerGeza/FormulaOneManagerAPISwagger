@@ -15,13 +15,9 @@ open class AccountAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountLoginPost(body: LoginDto? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    open class func apiAccountLoginPost(body: LoginDto? = nil, completion: @escaping ((_ data: AuthResponseDto?,_ error: Error?) -> Void)) {
         apiAccountLoginPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
-            if error == nil {
-                completion((), error)
-            } else {
-                completion(nil, error)
-            }
+            completion(response?.body, error)
         }
     }
 
@@ -33,18 +29,23 @@ open class AccountAPI {
      - API Key:
        - type: apiKey Authorization 
        - name: Bearer
+     - examples: [{contentType=application/json, example={
+  "userId" : "userId",
+  "token" : "token",
+  "refreshToken" : "refreshToken"
+}}]
      - parameter body: (body)  (optional)
 
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<AuthResponseDto> 
      */
-    open class func apiAccountLoginPostWithRequestBuilder(body: LoginDto? = nil) -> RequestBuilder<Void> {
+    open class func apiAccountLoginPostWithRequestBuilder(body: LoginDto? = nil) -> RequestBuilder<AuthResponseDto> {
         let path = "/api/Account/login"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
 
-        let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let requestBuilder: RequestBuilder<AuthResponseDto>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
     }
