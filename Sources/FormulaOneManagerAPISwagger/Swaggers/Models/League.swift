@@ -29,7 +29,7 @@ public struct League: Codable {
         case _id = "id"
         case name
         case nextRaceId
-        //case playerTeamLeagues
+        case playerTeamLeagues
         case playerTeams
     }
 

@@ -59,8 +59,8 @@ public struct PlayerTeam: Codable {
         case teamChief
         case technicalChiefId
         case technicalChief
-        case playerTeamLeagues
-        case leagues
+        //case playerTeamLeagues
+        //case leagues
     }
 
 }
